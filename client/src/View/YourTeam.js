@@ -15,19 +15,27 @@ function YourTeam() {
 
   Axios.defaults.withCredentials = true;
 
-  console.log(userID);
-
   //find course table
   useEffect(() => {
+    axios.get("/yourcourses").then((response) => {
+      setData(response.data);
+    });
+  }, []);
+
+  //function for getting list of assigned users
+  /*   const spaces = (CourseID) => {
+    console.log(CourseID);
     axios
-      .get(`/yourcourses?id=${userID}`, {
-        id: userID,
+      .get(`/course/getassigns?id=${CourseID}`, {
+        data: {
+          id: CourseID,
+        },
       })
       .then((response) => {
-        setData(response.data);
         console.log(response);
+        setTest(response.data);
       });
-  }, []);
+  }; */
 
   //function for cancel user from assigned course
   const cancellation = (CourseID) => {
@@ -49,40 +57,44 @@ function YourTeam() {
 
       <h4>Hold</h4>
 
-      {data.map((course) => {
-        return (
-          <div className="Card">
-            <div className="Card__header">
-              <img className="Card__image" src={cardphoto} alt="cardphoto" />
-            </div>
-            <Col className="Card__body">
-              <h2 className="Card__title">{course.CourseTitle}</h2>
-              <p className="Card__instructor">{course.CourseInstructorNames}</p>
-              <p className="Card__price">DKK {course.CoursePrice}</p>
-              <p className="Card__spaces">
-                {course.CourseBookingCount} / {course.CourseSpaces}
-              </p>
-              <p className="Card__start-date">{course.CourseStartDate}</p>
-              <p className="Card__end-date">{course.CourseEndDate}</p>
+      {data
+        .filter((course) => course.UserID === userID) //filter method where course.user id has to be the same as the user.
+        .map((course) => {
+          return (
+            <div className="Card">
+              <div className="Card__header">
+                <img className="Card__image" src={cardphoto} alt="cardphoto" />
+              </div>
+              <Col className="Card__body">
+                <h2 className="Card__title">{course.CourseTitle}</h2>
+                <p className="Card__instructor">
+                  {course.CourseInstructorNames}
+                </p>
+                <p className="Card__price">DKK {course.CoursePrice}</p>
+                <p className="Card__spaces">
+                  {course.CourseBookingIndividual} / {course.CourseSpaces}
+                </p>
+                <p className="Card__start-date">{course.CourseStartDate}</p>
+                <p className="Card__end-date">{course.CourseEndDate}</p>
 
-              <Row className="Card__btn-wrapper">
-                {userAdmin === 1 ? (
-                  <button className="Card__btn">Rediger</button>
-                ) : (
-                  <button
-                    className="Card__btn"
-                    onClick={() => {
-                      cancellation(course.CourseID);
-                    }}
-                  >
-                    Afbud
-                  </button>
-                )}
-              </Row>
-            </Col>
-          </div>
-        );
-      })}
+                <Row className="Card__btn-wrapper">
+                  {userAdmin === 1 ? (
+                    <button className="Card__btn">Rediger</button>
+                  ) : (
+                    <button
+                      className="Card__btn"
+                      onClick={() => {
+                        cancellation(course.CourseID);
+                      }}
+                    >
+                      Afbud
+                    </button>
+                  )}
+                </Row>
+              </Col>
+            </div>
+          );
+        })}
     </Col>
   );
 }

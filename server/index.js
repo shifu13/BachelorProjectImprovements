@@ -208,25 +208,27 @@ app.delete("/course/cancellation", (req, res) => {
 //Get users assigned for the course - right now this doesnt matter bcs we do INNER JOIN on /getcourses
 app.get("/course/getassigns", (req, res) => {
   const id = req.query.id;
+  console.log("Dette er id course " + id);
 
-  const sqlGet = "SELECT * FROM COURSEBOOKING WHERE CourseID = ?";
+  const sqlGet =
+    "SELECT count(CourseID) as total FROM COURSEBOOKING WHERE CourseID = ?";
 
   db.query(sqlGet, [id], (err, result) => {
     if (err) {
       console.log(err);
     } else {
+      //const assigns = result[0].total;
       res.send(result);
+      //console.log(result[0].total);
     }
   });
 });
 
 //Get all courses users have signed up for
 app.get("/yourcourses", (req, res) => {
-  const id = req.query.id;
   const sqlGet =
-    "SELECT course.CourseID, coursebooking.UserID, course.CourseTitle, course.CourseSpaces, course.CourseStartDate, course.CourseEndDate, course.CourseInstructorNames, count(coursebooking.CourseID) as CourseBookingCount FROM `course` FULL JOIN coursebooking ON course.CourseID = coursebooking.CourseID GROUP BY Course.CourseID WHERE coursebooking.UserID = ?";
-  console.log("id er følgende: " + id);
-  db.query(sqlGet, [id], (err, results) => {
+    "SELECT course.CourseID, coursebooking.UserID, course.CourseTitle, course.CoursePrice, course.CourseSpaces, course.CourseStartDate, course.CourseEndDate, course.CourseInstructorNames, count(coursebooking.CourseID) as CourseBookingIndividual FROM course LEFT JOIN coursebooking ON course.CourseID = coursebooking.CourseID GROUP BY Course.CourseID";
+  db.query(sqlGet, (err, results) => {
     if (err) throw err;
     res.send(results);
   });
@@ -235,7 +237,7 @@ app.get("/yourcourses", (req, res) => {
 //Get all courses
 app.get("/getcourses", (req, res) => {
   db.query(
-    "SELECT course.CourseID, course.CourseTitle, course.CourseSpaces, course.CourseStartDate, course.CourseEndDate, course.CourseInstructorNames, count(coursebooking.CourseID) as CourseBookingCount FROM `course` LEFT JOIN coursebooking ON course.CourseID = coursebooking.CourseID GROUP BY Course.CourseID",
+    "SELECT course.CourseID, course.CourseTitle, course.CoursePrice, course.CourseSpaces, course.CourseStartDate, course.CourseEndDate, course.CourseInstructorNames, count(coursebooking.CourseID) as CourseBookingCount FROM `course` LEFT JOIN coursebooking ON course.CourseID = coursebooking.CourseID GROUP BY Course.CourseID",
     (err, results, fields) => {
       if (err) throw err;
       res.send(results);

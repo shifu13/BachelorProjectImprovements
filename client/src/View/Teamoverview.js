@@ -35,20 +35,6 @@ function Teamoverview() {
       });
   };
 
-  //function for getting list of assigned users
-  /* const spaces = (CourseID) => {
-    console.log(CourseID);
-    axios
-      .get(`/course/getassigns?id=${CourseID}`, {
-        data: {
-          id: CourseID,
-        },
-      })
-      .then((response) => {
-        console.log(response);
-      });
-  }; */
-
   return (
     <Col className="teamoverview">
       <h2>Holdoversigt</h2>
