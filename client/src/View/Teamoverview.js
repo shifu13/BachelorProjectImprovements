@@ -5,7 +5,7 @@ import { Col, Row } from "react-bootstrap";
 import axios from "../AxiosConfig";
 import { TokenContext } from "../Component/TokenProvider";
 import cardphoto from "../img/cardphoto.jpg";
-import NavLinks from "../Component/NavLinks";
+//import NavLinks from "../Component/NavLinks";
 import { Link } from "react-router-dom";
 
 function Teamoverview() {
@@ -25,10 +25,22 @@ function Teamoverview() {
 
   const edit = () => {};
 
+  const deleteCourse = (CourseID) => {
+    axios
+      .delete("/course/delete", {
+        data: {
+          courseid: CourseID,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+      });
+  };
+
   //function for assigning an user to a course
   const assign = (CourseID) => {
     axios
-      .put("/course/assign", {
+      .post("/course/assign", {
         userid: userID,
         courseid: CourseID,
       })
@@ -75,6 +87,18 @@ function Teamoverview() {
                   >
                     Tilmeld
                   </button>
+                )}
+                {userAdmin === 1 ? (
+                  <button
+                    className="Card__btn"
+                    onClick={() => {
+                      deleteCourse(course.CourseID);
+                    }}
+                  >
+                    Delete
+                  </button>
+                ) : (
+                  <div></div>
                 )}
               </Row>
             </Col>

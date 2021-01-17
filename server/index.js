@@ -189,6 +189,20 @@ app.post("/course/assign", (req, res) => {
   });
 });
 
+//Course delete
+app.delete("/course/delete", (req, res) => {
+  const courseid = req.body.courseid;
+  const sqlDelete = "DELETE from COURSE WHERE CourseID = ?";
+
+  db.query(sqlDelete, [courseid], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
 //Cancel user from assigned course
 app.delete("/course/cancellation", (req, res) => {
   const userid = req.body.userid;
