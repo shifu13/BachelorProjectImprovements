@@ -8,6 +8,7 @@ import WaitingList from "../View/WaitingList";
 import CancelationList from "../View/CancelationList";
 import { TokenContext } from "./TokenProvider";
 import { propTypes } from "react-bootstrap/esm/Image";
+import IndividualCourse from "../View/IndividualCourse";
 
 //render det content der skal være på siden, i forhold til den route man er på
 //vise det rigtige content ift. URL
@@ -43,6 +44,10 @@ function MainContent(props) {
         <Route path={"/Createcourse"} exact>
           <CreateCourse />
         </Route>
+
+        <Route path={"/course/:id"} exact>
+          <IndividualCourse />
+        </Route>
       </Switch>
     );
   }
@@ -65,6 +70,9 @@ function MainContent(props) {
         </Route>
         <Route path={"/Profileinformation"} exact>
           <ProfileInformation />
+        </Route>
+        <Route path={"/course/:id"} exact>
+          <IndividualCourse />
         </Route>
         <Route path={"/Logout"} exact></Route>
       </Switch>

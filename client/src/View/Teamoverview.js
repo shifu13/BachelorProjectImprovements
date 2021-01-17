@@ -5,6 +5,8 @@ import { Col, Row } from "react-bootstrap";
 import axios from "../AxiosConfig";
 import { TokenContext } from "../Component/TokenProvider";
 import cardphoto from "../img/cardphoto.jpg";
+import NavLinks from "../Component/NavLinks";
+import { Link } from "react-router-dom";
 
 function Teamoverview() {
   //usestate for course creation
@@ -26,7 +28,7 @@ function Teamoverview() {
   //function for assigning an user to a course
   const assign = (CourseID) => {
     axios
-      .post("/course/assign", {
+      .put("/course/assign", {
         userid: userID,
         courseid: CourseID,
       })
@@ -45,7 +47,9 @@ function Teamoverview() {
         return (
           <div className="Card">
             <div className="Card__header">
-              <img className="Card__image" src={cardphoto} alt="cardphoto" />
+              <Link to={`/course/${course.CourseID}`}>
+                <img className="Card__image" src={cardphoto} alt="cardphoto" />
+              </Link>
             </div>
             <Col className="Card__body">
               <h2 className="Card__title">{course.CourseTitle}</h2>

@@ -225,10 +225,44 @@ app.get("/course/getassigns", (req, res) => {
 });
 
 //Get all courses users have signed up for
-app.get("/yourcourses", (req, res) => {
+app.get("/course/yourcourses", (req, res) => {
   const sqlGet =
     "SELECT course.CourseID, coursebooking.UserID, course.CourseTitle, course.CoursePrice, course.CourseSpaces, course.CourseStartDate, course.CourseEndDate, course.CourseInstructorNames, count(coursebooking.CourseID) as CourseBookingIndividual FROM course LEFT JOIN coursebooking ON course.CourseID = coursebooking.CourseID GROUP BY Course.CourseID";
   db.query(sqlGet, (err, results) => {
+    if (err) throw err;
+    res.send(results);
+  });
+});
+
+//Insert into dropin
+app.post("/course/dropin", (req, res) => {
+  const courseid = req.body.courseid;
+  const userid = req.body.userid;
+  const sqlInsert =
+    "INSERT INTO WAITINGUSERS (CourseID, UserID, CreatedDate) VALUES (?,?, now())";
+  db.query(sqlInsert, [courseid, userid], (err, results) => {
+    if (err) throw err;
+    res.send(results);
+  });
+});
+
+//Select all users on the waiting list for specific course
+app.get("/course/waitinglist", (req, res) => {
+  const id = req.query.id;
+  const sqlSelect =
+    "SELECT users.UserID, waitingusers.CreatedDate, users.UserEmail, users.UserLastName, users.UserFirstName, users.UserPhone FROM `users` LEFT JOIN waitingusers ON users.UserID = waitingusers.UserID WHERE waitingusers.CourseID = ?";
+  db.query(sqlSelect, [id], (err, results) => {
+    if (err) throw err;
+    res.send(results);
+  });
+});
+
+//Get data from specifiic course based on courseID
+app.get("/course/singlecourse", (req, res) => {
+  const id = req.query.id;
+  const sqlSelect =
+    "SELECT course.CourseID, course.CourseTitle, course.CourseDescription, course.CoursePrice, course.CourseSpaces, course.CourseStartDate, course.CourseEndDate, course.CourseInstructorNames, count(coursebooking.CourseID) as CourseBookingCount, course.CourseAddress FROM `course` LEFT JOIN coursebooking ON course.CourseID = coursebooking.CourseID WHERE course.CourseID = ?";
+  db.query(sqlSelect, [id], (err, results) => {
     if (err) throw err;
     res.send(results);
   });

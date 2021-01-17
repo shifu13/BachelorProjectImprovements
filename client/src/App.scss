@@ -377,6 +377,44 @@ body {
   }
 }
 
+//Show individual course
+.course__individual {
+  display: flex;
+  flex-direction: column;
+
+  .course {
+    display: flex;
+    flex-direction: row;
+    max-height: 500px;
+    min-height: 450px;
+
+    .course__image-wrapper {
+      margin-top: 10px;
+    }
+  }
+}
+
+//WAITINGLIST FOR COURSES
+.course-waitinglist {
+  padding: 5px;
+  border: 1px solid $black;
+  max-height: 100px;
+
+  .course-waitinglist__body-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    .course-waitinglist__name,
+    .course-waitinglist__phone,
+    .course-waitinglist__email,
+    .course-waitinglist__date {
+      display: inline-block;
+      padding-right: 5px;
+    }
+  }
+}
+
 //PROFILEINFORMATION
 .profileinformation {
   display: flex;
