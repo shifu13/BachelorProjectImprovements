@@ -142,7 +142,7 @@ app.post("/login", (req, res) => {
 });
 
 //Create Course
-app.post("/createcourse", (req, res) => {
+app.post("course/createcourse", (req, res) => {
   const userid = req.body.userid;
   const title = req.body.title;
   const description = req.body.description;
@@ -283,7 +283,7 @@ app.get("/course/singlecourse", (req, res) => {
 });
 
 //Get all courses
-app.get("/getcourses", (req, res) => {
+app.get("/course/getcourses", (req, res) => {
   db.query(
     "SELECT course.CourseID, course.CourseTitle, course.CoursePrice, course.CourseSpaces, course.CourseStartDate, course.CourseEndDate, course.CourseInstructorNames, count(coursebooking.CourseID) as CourseBookingCount FROM `course` LEFT JOIN coursebooking ON course.CourseID = coursebooking.CourseID GROUP BY Course.CourseID",
     (err, results, fields) => {

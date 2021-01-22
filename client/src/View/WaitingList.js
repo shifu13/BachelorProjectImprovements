@@ -17,7 +17,7 @@ function WaitingList() {
 
   //find course table
   useEffect(() => {
-    axios.get("/getcourses").then((response) => {
+    axios.get("/course/getcourses").then((response) => {
       setData(response.data);
       console.log(response);
     });

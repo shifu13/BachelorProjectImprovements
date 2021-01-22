@@ -23,7 +23,7 @@ function CreateCourse() {
 
   //sending register request to backend - register method
   const create = () => {
-    Axios.post("http://localhost:3001/createcourse", {
+    Axios.post("http://localhost:3001/course/createcourse", {
       userid: userID,
       title: titleReg,
       description: descriptionReg,
